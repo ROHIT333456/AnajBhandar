@@ -1,33 +1,45 @@
-import React, { useContext, useEffect, useState } from 'react'
-import Title from './Title'
-import { shopDataContext } from '../context/ShopContext'
-import Card from './Card'
+import React, { useContext, useEffect, useState } from 'react';
+import Title from './Title';
+import { shopDataContext } from '../context/ShopContext';
+import Card from './Card';
 
 function BestSeller() {
-    let {products} = useContext(shopDataContext)
-    let [bestSeller,setBestSeller] = useState([])
+  const { products } = useContext(shopDataContext);
+  const [bestSeller, setBestSeller] = useState([]);
 
-    useEffect(()=>{
-    let filterProduct = products.filter((item) => item.bestseller)
+  useEffect(() => {
+    const filterProduct = products.filter(item => item.bestseller);
+    setBestSeller(filterProduct.slice(0, 4)); // Show top 4 best sellers
+  }, [products]);
 
-    setBestSeller(filterProduct.slice(0,4));
-    },[products])
   return (
-    <div>
-        <div className='h-[8%] w-[100%] text-center mt-[50px] '>
-            <Title text1={"BEST"} text2={"SELLER"}/> 
-            <p className='w-[100%] m-auto text-[13px] md:text-[20px] px-[10px] text-blue-100'>Tried, Tested, Loved – Discover Our All-Time Best Sellers.</p>
+    <div className="py-10 px-4">
+      <div className="text-center mb-8">
+        <Title text1="BEST" text2="SELLERS" />
+        <p className="text-sm md:text-lg text-blue-100 mt-2">
+          Pure Taste, Trusted Quality – Our Most Loved Rice Varieties.
+        </p>
+      </div>
+
+      {bestSeller.length > 0 ? (
+        <div className="flex flex-wrap justify-center gap-8">
+          {bestSeller.map((item) => (
+            <Card
+              key={item._id}
+              id={item._id}
+              name={item.name}
+              price={item.price}
+              image={item.image1}
+            />
+          ))}
         </div>
-        <div className='w-[100%] h-[50%] mt-[30px] flex items-center justify-center flex-wrap gap-[50px]'>
-            {
-             bestSeller.map((item,index)=>(
-                <Card key={index} name={item.name} id={item._id} price={item.price} image={item.image1}/>
-             ))
-            }
+      ) : (
+        <div className="text-center text-blue-200 text-sm">
+          No best seller rice available at the moment.
         </div>
-      
+      )}
     </div>
-  )
+  );
 }
 
-export default BestSeller
+export default BestSeller;

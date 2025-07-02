@@ -1,52 +1,75 @@
-import React from 'react'
-import logo from "../assets/logo.png"
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FaWhatsapp } from 'react-icons/fa';
+import logo from '../assets/logo.png';
+
 function Footer() {
+  const navigate = useNavigate();
+
+  // Dynamic contact info (you can pass props or use context instead)
+  const supportPhone = '+91-8789159033';
+  const supportEmail = 'support@AnajBhandar.com';
+
   return (
-    <div className='w-[100%] md:h-[36vh] h-[21vh] mb-[77px] md:mb-[0px]'>
-        <div className='w-[100%] md:h-[30vh] h-[15vh]  md:mb-[0px] bg-[#dbfcfcec] flex items-center justify-center md:px-[50px] px-[5px]'>
-            <div className='md:w-[30%] w-[35%] h-[100%] flex items-start justify-center flex-col gap-[5px]  '>
-                <div className='flex items-start justify-start gap-[5px] mt-[10px] md:mt-[40px]'>
-                    <img src={logo} alt=""  className='md:w-[40px] md:h-[40px] w-[30px] h-[30px]'/>
-                    <p className='text-[19px] md:text-[20px] text-[black] '>OneCart</p>
-            
-                </div>
-                <p className='text-[15px] text-[#1e2223] hidden md:block'>OneCart is your all-in-one online shopping destination, offering top-quality products, unbeatable deals, and fast delivery—all backed by trusted service designed to make your life easier every day.</p>
-                    <p className='text-[15px] text-[#1e2223] flex md:hidden'>Fast. Easy. Reliable. OneCart Shopping</p>
+    <footer className="w-full bg-[#dbfcfcec] text-[#1e2223]">
+      {/* Main Footer Section */}
+      <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center px-6 md:px-16 py-8 gap-6">
 
-                
-            </div>
-            <div className='md:w-[25%] w-[30%] h-[100%] flex items-center justify-center flex-col text-center'>
-                    <div className='flex items-center justify-center gap-[5px] mt-[10px] md:mt-[40px]'>
-                        <p className='text-[19px] md:text-[20px] text-[#1e2223] font-sans '>COMPANY</p>
+        {/* Logo & Description */}
+        <div className="md:w-[30%] w-full">
+          <div className="flex items-center gap-2 mb-2 cursor-pointer" onClick={() => navigate("/")}>
+            <img src={logo} alt="OneCart Logo" className="w-[30px] md:w-[40px]" />
+            <h1 className="text-xl md:text-2xl font-semibold">Anaj Bhandar</h1>
+          </div>
+          <p className="text-sm md:text-base">
+            Delivering premium rice — Basmati, Brown, Sona Masoori, and more — straight from farms to your kitchen. Trusted quality, farm-fresh flavor.
+          </p>
 
-                    </div>
-                    <ul>
-                         <li className='text-[15px] text-[#1e2223] hidden md:block cursor-pointer'>Home</li>
-                        <li className='text-[15px] text-[#1e2223] cursor-pointer '>About us</li>
-                        <li className='text-[15px] text-[#1e2223] hidden md:block cursor-pointer'>Delivery</li>
-                        <li className='text-[15px] text-[#1e2223] cursor-pointer'>Privacy Policy</li>
-                    </ul>
-                </div>
-
-                <div className='md:w-[25%] w-[40%]  h-[100%] flex items-center justify-center flex-col text-center '>
-                     <div className='flex items-center justify-center gap-[5px] mt-[10px] md:mt-[40px]'>
-                        <p className='text-[19px] md:text-[20px] text-[#1e2223] font-sans '>GET IN TOUCH</p>
-
-                    </div>
-                     <ul>
-                         <li className='text-[15px] text-[#1e2223] '>+91-9876543210</li>
-                        <li className='text-[15px] text-[#1e2223] '>contact@onecart.com</li>
-                        <li className='text-[15px] text-[#1e2223] hidden md:block'>+1-123-456-7890</li>
-                        <li className='text-[15px] text-[#1e2223] hidden md:block'>admin@onecart.com</li>
-                    </ul>
-                </div>
-
+          {/* WhatsApp Button */}
+          <a
+            href={`https://wa.me/${supportPhone.replace(/[^0-9]/g, '')}?text=Hi%20AnajBhandar%2C%20I%20am%20interested%20in%20buying%20your%20rice%20products!`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
+          >
+            <FaWhatsapp size={20} />
+            Chat on WhatsApp
+          </a>
         </div>
-        <div className='w-[100%] h-[1px] bg-slate-400'></div>
-        <div className='w-[100%] h-[5vh] bg-[#dbfcfcec] flex items-center justify-center'>Copyright 2025@onecart.com-All Rights Reserved</div>
-      
-    </div>
-  )
+
+        {/* Company Links */}
+        <div className="md:w-[20%] w-full text-center md:text-left">
+          <h2 className="text-lg font-semibold mb-2">Company</h2>
+          <ul className="space-y-1 text-sm">
+            <li className="cursor-pointer hover:underline" onClick={() => navigate('/')}>Home</li>
+            <li className="cursor-pointer hover:underline" onClick={() => navigate('/products')}>Our Rice</li>
+            <li className="cursor-pointer hover:underline" onClick={() => navigate('/farming-process')}>Farming Process</li>
+            <li className="cursor-pointer hover:underline" onClick={() => navigate('/privacy')}>Privacy Policy</li>
+          </ul>
+        </div>
+
+        {/* Contact Info */}
+        <div className="md:w-[25%] w-full text-center md:text-left">
+          <h2 className="text-lg font-semibold mb-2">Get in Touch</h2>
+          <ul className="space-y-1 text-sm">
+            <li>📞 {supportPhone}</li>
+            <li>📧 {supportEmail}</li>
+            <li className="hidden md:block">📞 +91 6207035060</li>
+            <li className="hidden md:block">📧 info@onecart.com</li>
+          </ul>
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div className="w-full h-[1px] bg-gray-400"></div>
+
+      {/* Bottom Footer Section */}
+      <div className="w-full py-3 px-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-700 bg-[#dbfcfcec]">
+        <p>© 2025 Anaj Bhandar – All Rights Reserved</p>
+        <p className="mt-1 md:mt-0">Website created by <span className="font-semibold text-black">Rohit Keshri</span></p>
+      </div>
+    </footer>
+  );
 }
 
-export default Footer
+export default Footer;

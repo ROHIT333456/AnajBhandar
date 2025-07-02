@@ -6,30 +6,46 @@ import { BiSupport } from "react-icons/bi";
 
 function OurPolicy() {
   return (
-    <div className='w-[100vw] h-[100vh] md:h-[70vh] flex items-center justify-start flex-col  bg-gradient-to-l from-[#141414] to-[#0c2025] gap-[50px] '>
-        <div className='h-[8%] w-[100%] text-center mt-[70px] '>
-            <Title text1={"OUR"} text2={"POLICY"}/>
-            <p className='w-[100%] m-auto text-[13px] md:text-[20px] px-[10px] text-blue-100 '>Customer-Friendly Policies – Committed to Your Satisfaction and Safety.</p>
-        </div>
-      <div className='w-[100%] md:min-h-[50%] h-[20%] flex items-center justify-center flex-wrap lg:gap-[50px] gap-[80px]'>
-        <div className='w-[400px] max-w-[90%] h-[60%] flex items-center justify-center flex-col gap-[10px] '>
-        <RiExchangeFundsLine  className='md:w-[60px] w-[30px] h-[30px] md:h-[60px] text-[#90b9ff]'/>
-        <p className='font-semibold md:text-[25px] text-[19px] text-[#a5e8f7]'>Easy Exchange Policy</p>
-        <p className='font-semibold md:text-[18px] text-[12px] text-[aliceblue] text-center'>Exchange Made Easy – Quick, Simple, and Customer-Friendly Process.</p>
+    <div className='w-full min-h-screen md:h-[70vh] flex flex-col items-center justify-start bg-gradient-to-l from-[#141414] to-[#0c2025] gap-12 px-4 py-10'>
+      
+      {/* Section Title */}
+      <div className='text-center mt-4'>
+        <Title text1={"OUR"} text2={"POLICY"} />
+        <p className='text-blue-100 text-sm md:text-lg mt-2'>
+          Customer-Friendly Policies – Committed to Your Satisfaction and Safety.
+        </p>
+      </div>
 
+      {/* Policy Cards */}
+      <div className='w-full flex flex-wrap items-center justify-center gap-10 md:gap-14'>
+        
+        {/* Easy Exchange */}
+        <div className='w-[300px] h-auto flex flex-col items-center text-center gap-3'>
+          <RiExchangeFundsLine className='text-[#90b9ff] w-10 h-10 md:w-16 md:h-16' />
+          <p className='text-[#a5e8f7] font-semibold text-lg md:text-2xl'>Easy Exchange Policy</p>
+          <p className='text-[aliceblue] text-xs md:text-base font-medium'>
+            Exchange Made Easy – Quick, Simple, and Customer-Friendly Process.
+          </p>
         </div>
-        <div className='w-[400px] max-w-[90%] h-[60%] flex items-center justify-center flex-col gap-[10px] '>
-        <TbRosetteDiscountCheckFilled  className='md:w-[60px] w-[30px] h-[30px] md:h-[60px] text-[#90b9ff]'/>
-        <p className='font-semibold md:text-[25px] text-[19px] text-[#a5e8f7]'>7 Days Return Policy</p>
-        <p className='font-semibold md:text-[18px] text-[12px] text-[aliceblue] text-center'>Shop with Confidence – 7 Days Easy Return Guarantee.</p>
 
+        {/* 7 Days Return */}
+        <div className='w-[300px] h-auto flex flex-col items-center text-center gap-3'>
+          <TbRosetteDiscountCheckFilled className='text-[#90b9ff] w-10 h-10 md:w-16 md:h-16' />
+          <p className='text-[#a5e8f7] font-semibold text-lg md:text-2xl'>7 Days Return Policy</p>
+          <p className='text-[aliceblue] text-xs md:text-base font-medium'>
+            Shop with Confidence – 7 Days Easy Return Guarantee.
+          </p>
         </div>
-        <div className='w-[400px] max-w-[90%] h-[60%] flex items-center justify-center flex-col gap-[10px] '>
-        <BiSupport  className='md:w-[60px] w-[30px] h-[30px] md:h-[60px] text-[#90b9ff]'/>
-        <p className='font-semibold md:text-[25px] text-[19px] text-[#a5e8f7]'>Best Customer Support</p>
-        <p className='font-semibold md:text-[18px] text-[12px] text-[aliceblue] text-center'>Trusted Customer Support – Your Satisfaction Is Our Priority.</p>
 
+        {/* Customer Support */}
+        <div className='w-[300px] h-auto flex flex-col items-center text-center gap-3'>
+          <BiSupport className='text-[#90b9ff] w-10 h-10 md:w-16 md:h-16' />
+          <p className='text-[#a5e8f7] font-semibold text-lg md:text-2xl'>Best Customer Support</p>
+          <p className='text-[aliceblue] text-xs md:text-base font-medium'>
+            Trusted Customer Support – Your Satisfaction Is Our Priority.
+          </p>
         </div>
+
       </div>
     </div>
   )

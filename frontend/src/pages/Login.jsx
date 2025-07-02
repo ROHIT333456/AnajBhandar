@@ -1,94 +1,149 @@
-import React from 'react'
-import Logo from "../assets/logo.png"
+import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { authDataContext } from '../context/authContext'
+import { userDataContext } from '../context/UserContext'
+import { signInWithPopup } from 'firebase/auth'
+import { auth, provider } from '../../utils/Firebase'
+import axios from 'axios'
+import { toast } from 'react-toastify'
+import { IoEyeOutline, IoEye } from "react-icons/io5"
 import google from '../assets/google.png'
-import { IoEyeOutline } from "react-icons/io5";
-import { IoEye } from "react-icons/io5";
-import { useState } from 'react';
-import { useContext } from 'react';
-import { authDataContext } from '../context/authContext';
-import axios from 'axios';
-import { signInWithPopup } from 'firebase/auth';
-import { auth, provider } from '../../utils/Firebase';
-import { userDataContext } from '../context/UserContext';
-import Loading from '../component/Loading';
+import Logo from '../assets/logo.png'
+import Loading from '../component/Loading'
 
 function Login() {
-    let [show,setShow] = useState(false)
-        let [email,setEmail] = useState("")
-        let [password,setPassword] = useState("")
-        let {serverUrl} = useContext(authDataContext)
-        let {getCurrentUser} = useContext(userDataContext)
-        let [loading,setLoading] = useState(false)
+  const [show, setShow] = useState(false)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
 
-    let navigate = useNavigate()
+  const { serverUrl } = useContext(authDataContext)
+  const { getCurrentUser } = useContext(userDataContext)
 
-    const handleLogin = async (e) => {
-        setLoading(true)
-        e.preventDefault()
-        try {
-            let result = await axios.post(serverUrl + '/api/auth/login',{
-                email,password
-            },{withCredentials:true})
-            console.log(result.data)
-            setLoading(false)
-            getCurrentUser()
-            navigate("/")
-            toast.success("User Login Successful")
-            
-        } catch (error) {
-            console.log(error)
-            toast.error("User Login Failed")
-        }
+  const navigate = useNavigate()
+
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    try {
+      const result = await axios.post(
+        `${serverUrl}/api/auth/login`,
+        { email, password },
+        { withCredentials: true }
+      )
+      toast.success("Login successful!")
+      getCurrentUser()
+      navigate("/")
+    } catch (error) {
+      console.error(error)
+      toast.error("Login failed! Check your credentials.")
+    } finally {
+      setLoading(false)
     }
-     const googlelogin = async () => {
-            try {
-                const response = await signInWithPopup(auth , provider)
-                let user = response.user
-                let name = user.displayName;
-                let email = user.email
-    
-                const result = await axios.post(serverUrl + "/api/auth/googlelogin" ,{name , email} , {withCredentials:true})
-                console.log(result.data)
-                getCurrentUser()
-            navigate("/")
-    
-            } catch (error) {
-                console.log(error)
-            }
-            
-        }
+  }
+
+  const googleLogin = async () => {
+    try {
+      const response = await signInWithPopup(auth, provider)
+      const user = response.user
+      const name = user.displayName
+      const email = user.email
+
+      const result = await axios.post(
+        `${serverUrl}/api/auth/googlelogin`,
+        { name, email },
+        { withCredentials: true }
+      )
+      toast.success("Google login successful!")
+      getCurrentUser()
+      navigate("/")
+    } catch (error) {
+      console.error(error)
+      toast.error("Google login failed")
+    }
+  }
+
   return (
-    <div className='w-[100vw] h-[100vh] bg-gradient-to-l from-[#141414] to-[#0c2025] text-[white] flex flex-col items-center justify-start'>
-    <div className='w-[100%] h-[80px] flex items-center justify-start px-[30px] gap-[10px] cursor-pointer' onClick={()=>navigate("/")}>
-    <img className='w-[40px]' src={Logo} alt="" />
-    <h1 className='text-[22px] font-sans '>OneCart</h1>
-    </div>
+    <div className='w-full h-screen bg-gradient-to-l from-[#141414] to-[#0c2025] text-white flex flex-col items-center'>
 
-    <div className='w-[100%] h-[100px] flex items-center justify-center flex-col gap-[10px]'>
-        <span className='text-[25px] font-semibold'>Login Page</span>
-        <span className='text-[16px]'>Welcome to OneCart, Place your order</span>
+      {/* Header */}
+      <div className='w-full h-[80px] flex items-center px-[30px] gap-3 cursor-pointer' onClick={() => navigate("/")}>
+        <img src={Logo} alt="OneCart Logo" className='w-[40px]' />
+        <h1 className='text-[22px] font-semibold'>OneCart</h1>
+      </div>
 
-    </div>
-    <div className='max-w-[600px] w-[90%] h-[500px] bg-[#00000025] border-[1px] border-[#96969635] backdrop:blur-2xl rounded-lg shadow-lg flex items-center justify-center '>
-        <form action="" onSubmit={handleLogin} className='w-[90%] h-[90%] flex flex-col items-center justify-start gap-[20px]'>
-            <div className='w-[90%] h-[50px] bg-[#42656cae] rounded-lg flex items-center justify-center gap-[10px] py-[20px] cursor-pointer' onClick={googlelogin}>
-                <img src={google} alt="" className='w-[20px]'/> Login account with Google
+      {/* Title */}
+      <div className='mt-2 text-center'>
+        <h2 className='text-[28px] font-bold'>Login to OneCart</h2>
+        <p className='text-gray-300'>Buy premium rice and essentials</p>
+      </div>
+
+      {/* Form Card */}
+      <div className='mt-4 max-w-[500px] w-[90%] bg-[#ffffff0a] border border-[#ffffff25] p-6 rounded-xl shadow-md'>
+        <form onSubmit={handleLogin} className='flex flex-col gap-4'>
+
+          {/* Google Login */}
+          <div
+            onClick={googleLogin}
+            className='flex items-center gap-3 justify-center w-full bg-[#ffffff15] py-3 rounded-md cursor-pointer hover:bg-[#ffffff20]'
+          >
+            <img src={google} alt="Google" className='w-5 h-5' />
+            <span>Login with Google</span>
+          </div>
+
+          {/* Divider */}
+          <div className='flex items-center gap-4 text-gray-400 text-sm'>
+            <hr className='w-full border-[#555]' /> OR <hr className='w-full border-[#555]' />
+          </div>
+
+          {/* Email */}
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email Address"
+            className='bg-transparent border border-gray-600 rounded-md px-4 py-2 placeholder:text-gray-300'
+          />
+
+          {/* Password */}
+          <div className='relative'>
+            <input
+              type={show ? 'text' : 'password'}
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              className='bg-transparent border border-gray-600 rounded-md px-4 py-2 w-full placeholder:text-gray-300'
+            />
+            <div
+              className='absolute right-3 top-3 cursor-pointer text-gray-400'
+              onClick={() => setShow(!show)}
+            >
+              {show ? <IoEye /> : <IoEyeOutline />}
             </div>
-            <div className='w-[100%] h-[20px] flex items-center justify-center gap-[10px]'>
-             <div className='w-[40%] h-[1px] bg-[#96969635]'></div> OR <div className='w-[40%] h-[1px] bg-[#96969635]'></div>
-            </div>
-            <div className='w-[90%] h-[400px] flex flex-col items-center justify-center gap-[15px]  relative'>
-              
-                 <input type="text" className='w-[100%] h-[50px] border-[2px] border-[#96969635] backdrop:blur-sm rounded-lg shadow-lg bg-transparent placeholder-[#ffffffc7] px-[20px] font-semibold' placeholder='Email' required  onChange={(e)=>setEmail(e.target.value)} value={email}/>
-                  <input type={show?"text":"password"} className='w-[100%] h-[50px] border-[2px] border-[#96969635] backdrop:blur-sm rounded-lg shadow-lg bg-transparent placeholder-[#ffffffc7] px-[20px] font-semibold' placeholder='Password' required onChange={(e)=>setPassword(e.target.value)} value={password}/>
-                  {!show && <IoEyeOutline className='w-[20px] h-[20px] cursor-pointer absolute right-[5%] bottom-[57%]' onClick={()=>setShow(prev => !prev)}/>}
-                  {show && <IoEye className='w-[20px] h-[20px] cursor-pointer absolute right-[5%] bottom-[57%]' onClick={()=>setShow(prev => !prev)}/>}
-                  <button className='w-[100%] h-[50px] bg-[#6060f5] rounded-lg flex items-center justify-center mt-[20px] text-[17px] font-semibold'>{loading? <Loading/> : "Login"}</button>
-                  <p className='flex  gap-[10px]'>You haven't any account? <span className='text-[#5555f6cf] text-[17px] font-semibold cursor-pointer' onClick={()=>navigate("/signup")}>Create New Account</span></p>
-            </div>
+          </div>
+
+          {/* Login Button */}
+          <button
+            type="submit"
+            className='bg-[#518ef8] py-2 rounded-md hover:bg-blue-600 transition font-semibold'
+          >
+            {loading ? <Loading /> : "Login"}
+          </button>
+
+          {/* Link to Signup */}
+          <p className='text-center text-sm text-gray-400'>
+            Don’t have an account?{" "}
+            <span
+              onClick={() => navigate("/signup")}
+              className='text-blue-400 cursor-pointer hover:underline'
+            >
+              Create New Account
+            </span>
+          </p>
         </form>
-    </div>
+      </div>
     </div>
   )
 }

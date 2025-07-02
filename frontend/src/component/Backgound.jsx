@@ -1,24 +1,21 @@
-import React from 'react'
-import back1 from "../assets/back1.jpg"
-import back2 from "../assets/back2.jpg"
-import back3 from "../assets/back3.jpg"
-import back4 from "../assets/back4.jpg"
+import React from 'react';
+import back1 from '../assets/back1.jpg';
+import back2 from '../assets/back2.jpg';
+import back3 from '../assets/back3.jpg';
+import back4 from '../assets/back4.jpg';
 
-function Backgound({heroCount}) {
-  
-    if(heroCount === 0){
-        return  <img src={back2} alt="" className='w-[100%] h-[100%]  float-left overflow-auto  object-cover'/>
-    }else if(heroCount === 1){
-       return  <img src={back1} alt="" className='w-[100%] h-[100%] float-left overflow-auto  object-cover'/>
+function Background({ heroCount }) {
+  const backgrounds = [back2, back1, back3, back4]; // Order as per your logic
 
-    }else if(heroCount === 2){
-       return  <img src={back3} alt="" className='w-[100%]  h-[100%] float-left overflow-auto  object-cover'/>
+  const imageToShow = backgrounds[heroCount] || back1; // fallback to back1
 
-    }else if(heroCount === 3){
-       return  <img src={back4} alt="" className='w-[100%] h-[100%] float-left overflow-auto  object-cover'/>
-
-    }
-  
+  return (
+    <img
+      src={imageToShow}
+      alt="Background"
+      className="w-full h-full object-cover float-left overflow-auto"
+    />
+  );
 }
 
-export default Backgound
+export default Background;
