@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 
 function Lists() {
   const [list, setList] = useState([])
-  const { serverUrl } = useContext(authDataContext)
+  const { serverUrl } = useContext(authDataContext); // ✅
   const navigate = useNavigate()
 
   const fetchList = async () => {
