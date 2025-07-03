@@ -10,7 +10,7 @@ function Home() {
   const [totalRevenue, setTotalRevenue] = useState(0);
   const [totalKgSold, setTotalKgSold] = useState(0);
 
-  const { serverUrl } = useContext(authDataContext);
+  const { serverUrl } = useContext(authDataContext); // ✅
 
   const fetchCounts = async () => {
     try {
