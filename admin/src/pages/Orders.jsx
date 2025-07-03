@@ -7,7 +7,8 @@ import { SiEbox } from "react-icons/si";
 
 function Orders() {
   const [orders, setOrders] = useState([]);
-  const { serverUrl } = useContext(authDataContext);
+  const { serverUrl } = useContext(authDataContext); // ✅
+
 
   const fetchAllOrders = async () => {
     try {
