@@ -8,7 +8,7 @@ import { adminDataContext } from '../context/AdminContext'
 
 function Nav() {
   const navigate = useNavigate()
-  const { serverUrl } = useContext(authDataContext)
+  const { serverUrl } = useContext(authDataContext); // ✅
   const { getAdmin } = useContext(adminDataContext)
 
   const logOut = async () => {
