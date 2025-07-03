@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { authDataContext } from './AuthContext'
+import { authDataContext } from '../context/AuthContext'; // ✅ use correct path
 import axios from 'axios'
 
 export const adminDataContext = createContext()
