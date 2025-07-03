@@ -12,7 +12,7 @@ function Login() {
   let [show,setShow] = useState(false)
           let [email,setEmail] = useState("")
           let [password,setPassword] = useState("")
-          let {serverUrl} = useContext(authDataContext)
+          const { serverUrl } = useContext(authDataContext); // ✅
           let {adminData , getAdmin} = useContext(adminDataContext)
           let navigate = useNavigate()
           const [loading,setLoading] = useState(false)
