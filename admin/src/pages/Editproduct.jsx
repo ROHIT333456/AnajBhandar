@@ -5,7 +5,7 @@ import { authDataContext } from '../context/AuthContext'
 
 function EditProduct() {
   const { id } = useParams()
-  const { serverUrl } = useContext(authDataContext)
+  const { serverUrl } = useContext(authDataContext); // ✅
   const navigate = useNavigate()
 
   const [product, setProduct] = useState({
