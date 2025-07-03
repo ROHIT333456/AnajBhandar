@@ -7,7 +7,8 @@ import { authDataContext } from '../context/AuthContext';
 export default function AdminHeroManager() {
   const [heros, setHeros] = useState([]);
   const [formData, setFormData] = useState({ text1: '', text2: '', image: null });
-  const { serverUrl } = useContext(authDataContext);
+  const { serverUrl } = useContext(authDataContext); // ✅
+
 
   const fetchHeroes = async () => {
     try {
