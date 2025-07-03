@@ -4,6 +4,9 @@ import contact from "../assets/contact.jpg"
 import NewLetterBox from '../component/NewLetterBox'
 
 function Contact() {
+  const phoneNumber = '+91-8789159033'
+  const emailAddress = 'manishkeshri547@gmail.com'
+
   return (
     <div className='w-[99vw] min-h-[100vh] flex items-center justify-center flex-col bg-gradient-to-l from-[#141414] to-[#0c2025] gap-[50px] pt-[80px]'>
       <Title text1={'CONTACT'} text2={'US'} />
@@ -16,13 +19,17 @@ function Contact() {
         <div className='lg:w-[50%] w-[80%] flex items-start justify-center gap-[20px] flex-col mt-[20px] lg:mt-[0px]'>
           <p className='lg:w-[80%] w-[100%] text-white font-bold lg:text-[18px] text-[15px]'>Our Rice Store</p>
           <div className='lg:w-[80%] w-[100%] text-white md:text-[16px] text-[13px]'>
-            <p>OneCart Rice Traders</p>
-            <p>NH-33, Kanke Road, Ranchi, Jharkhand, India</p>
+            <p>Anaj Bhandar Rice Traders</p>
+            <p>Bajar samiti, Garhwa, Jharkhand, India</p>
           </div>
 
           <div className='lg:w-[80%] w-[100%] text-white md:text-[16px] text-[13px]'>
-            <p>Phone: +91-9876543210</p>
-            <p>Email: support@onecartrice.com</p>
+            <p>
+              Phone: <a href={`tel:${phoneNumber}`} className="text-blue-400 underline">{phoneNumber}</a>
+            </p>
+            <p>
+              Email: <a href={`mailto:${emailAddress}`} className="text-blue-400 underline">{emailAddress}</a>
+            </p>
           </div>
 
           <p className='lg:w-[80%] w-[100%] text-white text-[15px] lg:text-[18px] mt-[10px] font-bold'>Work With Us</p>

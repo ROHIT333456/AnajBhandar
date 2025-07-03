@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authDataContext } from '../context/authContext';
+import { authDataContext } from '../context/AuthContext';
 import { userDataContext } from '../context/UserContext';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '../../utils/Firebase';
@@ -70,14 +70,14 @@ function Registration() {
 
       {/* Logo */}
       <div className='w-full h-[80px] flex items-center px-[30px] gap-3 cursor-pointer' onClick={() => navigate("/")}>
-        <img src={Logo} alt="OneCart Logo" className='w-[40px]' />
-        <h1 className='text-[22px] font-semibold'>OneCart</h1>
+        <img src={Logo} alt="Anaj Bhandar Logo" className='w-[40px]' />
+        <h1 className='text-[22px] font-semibold'>Anaj Bhandar</h1>
       </div>
 
       {/* Title */}
       <div className='mt-4 text-center'>
         <h2 className='text-[28px] font-bold'>Create Account</h2>
-        <p className='text-gray-300'>Join OneCart and start ordering fresh rice</p>
+        <p className='text-gray-300'>Join Anaj Bhandar and start ordering fresh rice</p>
       </div>
 
       {/* Form */}

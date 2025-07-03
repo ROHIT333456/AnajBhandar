@@ -6,7 +6,7 @@ import logo from '../assets/logo.png';
 function Footer() {
   const navigate = useNavigate();
 
-  // Dynamic contact info (you can pass props or use context instead)
+  // Contact info
   const supportPhone = '+91-8789159033';
   const supportEmail = 'support@AnajBhandar.com';
 
@@ -18,7 +18,7 @@ function Footer() {
         {/* Logo & Description */}
         <div className="md:w-[30%] w-full">
           <div className="flex items-center gap-2 mb-2 cursor-pointer" onClick={() => navigate("/")}>
-            <img src={logo} alt="OneCart Logo" className="w-[30px] md:w-[40px]" />
+            <img src={logo} alt="Anaj Bhandar Logo" className="w-[30px] md:w-[40px]" />
             <h1 className="text-xl md:text-2xl font-semibold">Anaj Bhandar</h1>
           </div>
           <p className="text-sm md:text-base">
@@ -42,9 +42,9 @@ function Footer() {
           <h2 className="text-lg font-semibold mb-2">Company</h2>
           <ul className="space-y-1 text-sm">
             <li className="cursor-pointer hover:underline" onClick={() => navigate('/')}>Home</li>
-            <li className="cursor-pointer hover:underline" onClick={() => navigate('/products')}>Our Rice</li>
-            <li className="cursor-pointer hover:underline" onClick={() => navigate('/farming-process')}>Farming Process</li>
-            <li className="cursor-pointer hover:underline" onClick={() => navigate('/privacy')}>Privacy Policy</li>
+            <li className="cursor-pointer hover:underline" onClick={() => navigate('/collection')}>collection</li>
+            <li className="cursor-pointer hover:underline" onClick={() => navigate('/about')}>About</li>
+            <li className="cursor-pointer hover:underline" onClick={() => navigate('/contact')}>Contact-us</li>
           </ul>
         </div>
 
@@ -52,10 +52,18 @@ function Footer() {
         <div className="md:w-[25%] w-full text-center md:text-left">
           <h2 className="text-lg font-semibold mb-2">Get in Touch</h2>
           <ul className="space-y-1 text-sm">
-            <li>📞 {supportPhone}</li>
-            <li>📧 {supportEmail}</li>
-            <li className="hidden md:block">📞 +91 6207035060</li>
-            <li className="hidden md:block">📧 info@onecart.com</li>
+            <li>
+              📞 <a href={`tel:${supportPhone}`} className="text-blue-500 underline">{supportPhone}</a>
+            </li>
+            <li>
+              📧 <a href={`mailto:${supportEmail}`} className="text-blue-500 underline">{supportEmail}</a>
+            </li>
+            <li className="hidden md:block">
+              📞 <a href="tel:+918789159033" className="text-blue-500 underline">+91-6207035060</a>
+            </li>
+            <li className="hidden md:block">
+              📧 <a href="mailto:manishkeshri547@gmail.com" className="text-blue-500 underline">manishkeshri547@gmail.com</a>
+            </li>
           </ul>
         </div>
       </div>

@@ -21,14 +21,14 @@ function About() {
         {/* About Text */}
         <div className='lg:w-[50%] w-[90%] flex flex-col gap-[20px] text-white'>
           <p className='text-[13px] md:text-[16px]'>
-            OneCart was born for smart, seamless shopping—created to deliver quality products, trending styles, and everyday essentials in one place. With reliable service, fast delivery, and great value, OneCart makes your online shopping experience simple, satisfying, and stress-free.
+            Anaj Bhandar was born for smart, seamless shopping—created to deliver quality products, trending styles, and everyday essentials in one place. With reliable service, fast delivery, and great value, Anaj Bhandar makes your online shopping experience simple, satisfying, and stress-free.
           </p>
           <p className='text-[13px] md:text-[16px]'>
             We serve modern shoppers—combining style, convenience, and affordability. Whether it’s fashion, essentials, or trends, we bring everything you need to one trusted platform with fast delivery, easy returns, and a customer-first shopping experience you’ll love.
           </p>
           <p className='text-[15px] lg:text-[18px] font-bold'>Our Mission</p>
           <p className='text-[13px] md:text-[16px]'>
-            Our mission is to redefine online shopping by delivering quality, affordability, and convenience. OneCart connects customers with trusted products and brands, offering a seamless, customer-focused experience that saves time, adds value, and fits every lifestyle and need.
+            Our mission is to redefine online shopping by delivering quality, affordability, and convenience. Anaj Bhandar connects customers with trusted products and brands, offering a seamless, customer-focused experience that saves time, adds value, and fits every lifestyle and need.
           </p>
         </div>
       </div>

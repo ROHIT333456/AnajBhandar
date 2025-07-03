@@ -32,8 +32,8 @@ function Nav() {
         className="flex items-center gap-3 cursor-pointer"
         onClick={() => navigate('/')}
       >
-        <img src={logo} alt="OneCart Logo" className="w-[30px]" />
-        <h1 className="text-xl font-semibold text-black">OneCart</h1>
+        <img src={logo} alt="Anaj Bhandar Logo" className="w-[30px]" />
+        <h1 className="text-xl font-semibold text-black">Anaj bhandar</h1>
       </div>
 
       {/* Buttons: Home + Logout */}
