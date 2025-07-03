@@ -20,7 +20,7 @@ function Add() {
   const [bestseller, setBestSeller] = useState(false)
   const [sizes, setSizes] = useState([])
   const [loading, setLoading] = useState(false)
-  const { serverUrl } = useContext(authDataContext)
+  const { serverUrl } = useContext(authDataContext); // ✅
 
   const calculateTotal = (basePrice, selectedSizes) => {
     const weights = selectedSizes.map(size => parseInt(size.replace("kg", "")))
