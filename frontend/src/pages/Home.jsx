@@ -14,7 +14,7 @@ function Home() {
   useEffect(() => {
     const fetchHeroData = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/hero");
+        const res = await fetch("https://anajbhandar-backend.onrender.com/api/hero");
         const data = await res.json();
         setHeroData(data);
       } catch (err) {
