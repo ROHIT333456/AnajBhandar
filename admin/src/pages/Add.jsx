@@ -31,7 +31,6 @@ function Add() {
     e.preventDefault()
     setLoading(true)
 
-    // Validation
     if (!image1 || !image2 || !image3 || !image4) {
       toast.error("Please upload all 4 images.")
       setLoading(false)
@@ -93,14 +92,13 @@ function Add() {
       <Nav />
       <Sidebar />
 
-      <div className='w-full md:w-[82%] h-full flex items-start justify-start absolute right-0 top-[80px] px-4 sm:px-6 md:px-16 pb-20'>
-        <form onSubmit={handleAddProduct} className='w-full flex flex-col gap-8'>
+      <div className='w-full md:w-[82%] h-full flex items-start justify-start absolute right-0 top-[80px] px-4 sm:px-6 md:px-10'>
+        <form onSubmit={handleAddProduct} className='w-full flex flex-col gap-8 pb-32 md:pb-8'>
           <h1 className='text-2xl md:text-4xl font-semibold'>Add Rice Product</h1>
 
-          {/* Image Upload */}
           <div className='flex flex-col gap-3'>
             <label className='text-xl font-semibold'>Upload Images</label>
-            <div className='flex gap-4 flex-wrap'>
+            <div className='flex gap-3 flex-wrap'>
               {[image1, image2, image3, image4].map((img, idx) => (
                 <label key={idx} htmlFor={`image${idx + 1}`} className='w-20 h-20 md:w-24 md:h-24 cursor-pointer'>
                   <img
@@ -133,7 +131,7 @@ function Add() {
             <textarea placeholder='Describe the rice product' className='w-full md:w-[600px] h-24 rounded-lg border-2 bg-slate-600 px-4 py-2' value={description} onChange={(e) => setDescription(e.target.value)} required />
           </div>
 
-          <div className='flex flex-wrap gap-8'>
+          <div className='flex flex-col sm:flex-row gap-8'>
             <div className='flex flex-col gap-2'>
               <label className='text-xl font-semibold'>Category</label>
               <select className='bg-slate-600 px-4 py-2 rounded-lg border-2' value={category} onChange={(e) => setCategory(e.target.value)}>
@@ -160,8 +158,14 @@ function Add() {
           <div className='flex flex-col gap-3'>
             <label className='text-xl font-semibold'>Available Packages</label>
             <div className='flex gap-3 flex-wrap'>
-              {["1kg", "5kg", "10kg", "26kg", "50kg"].map(size =>(
-                <div key={size} className={`px-5 py-2 rounded-lg border-2 bg-slate-600 cursor-pointer ${sizes.includes(size) ? "bg-green-400 text-black border-[#46d1f7]" : ""}`} onClick={() => setSizes(prev => prev.includes(size) ? prev.filter(s => s !== size) : [...prev, size])}>{size}</div>
+              {["1kg", "5kg", "10kg", "26kg", "50kg"].map(size => (
+                <div
+                  key={size}
+                  className={`px-5 py-2 rounded-lg border-2 bg-slate-600 cursor-pointer ${sizes.includes(size) ? "bg-green-400 text-black border-[#46d1f7]" : ""}`}
+                  onClick={() => setSizes(prev => prev.includes(size) ? prev.filter(s => s !== size) : [...prev, size])}
+                >
+                  {size}
+                </div>
               ))}
             </div>
           </div>

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { authDataContext } from '../context/AuthContext';
 import { userDataContext } from '../context/UserContext';
 import { signInWithPopup } from 'firebase/auth';
@@ -8,7 +8,6 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { IoEyeOutline, IoEye } from "react-icons/io5";
 import google from '../assets/google.png';
-import Logo from '../assets/logo.png';
 import Loading from '../component/Loading';
 
 function Registration() {
@@ -22,19 +21,21 @@ function Registration() {
   const { serverUrl } = useContext(authDataContext);
   const { getCurrentUser } = useContext(userDataContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  const redirectPath = location.state?.from || '/';
 
   const handleSignup = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const result = await axios.post(
+      await axios.post(
         `${serverUrl}/api/auth/registration`,
         { name, email, phone, password },
         { withCredentials: true }
       );
       toast.success("Registration Successful!");
-      getCurrentUser();
-      navigate("/");
+      await getCurrentUser();
+      navigate(redirectPath);
     } catch (error) {
       console.error(error);
       toast.error("Registration Failed!");
@@ -57,8 +58,8 @@ function Registration() {
       );
 
       toast.success("Google Signup Successful!");
-      getCurrentUser();
-      navigate("/");
+      await getCurrentUser();
+      navigate(redirectPath);
     } catch (error) {
       console.error(error);
       toast.error("Google Signup Failed!");
@@ -66,16 +67,10 @@ function Registration() {
   };
 
   return (
-    <div className='w-full h-screen bg-gradient-to-l from-[#141414] to-[#0c2025] text-white flex flex-col items-center'>
-
-      {/* Logo */}
-      <div className='w-full h-[80px] flex items-center px-[30px] gap-3 cursor-pointer' onClick={() => navigate("/")}>
-        <img src={Logo} alt="Anaj Bhandar Logo" className='w-[40px]' />
-        <h1 className='text-[22px] font-semibold'>Anaj Bhandar</h1>
-      </div>
+    <div className='w-full h-screen bg-gradient-to-l from-[#141414] to-[#0c2025] text-white flex flex-col items-center pt-[80px]'>
 
       {/* Title */}
-      <div className='mt-4 text-center'>
+      <div className='text-center'>
         <h2 className='text-[28px] font-bold'>Create Account</h2>
         <p className='text-gray-300'>Join Anaj Bhandar and start ordering fresh rice</p>
       </div>
@@ -140,7 +135,7 @@ function Registration() {
             </div>
           </div>
 
-          {/* Submit Button with Centered Spinner */}
+          {/* Submit Button */}
           <button
             type="submit"
             className='bg-[#518ef8] py-2 rounded-md hover:bg-blue-600 transition font-semibold flex items-center justify-center'

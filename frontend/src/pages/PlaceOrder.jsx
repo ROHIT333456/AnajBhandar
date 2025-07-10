@@ -79,8 +79,6 @@ function PlaceOrder() {
       for (const productId in cartItem) {
         for (const size in cartItem[productId]) {
           const quantity = cartItem[productId][size];
-          
-          
           if (quantity > 0) {
             orderItems.push({
               _id: productId,
@@ -93,7 +91,7 @@ function PlaceOrder() {
 
       const orderData = {
         address: formData,
-        items: orderItems // ✅ Only items and address — amount calculate karega backend
+        items: orderItems
       };
 
       if (orderItems.length === 0) {
@@ -170,7 +168,7 @@ function PlaceOrder() {
 
           <div className='flex justify-center'>
             <button type='submit' className='bg-[#3bcee848] border border-[#80808049] text-white text-[18px] px-[50px] py-[10px] rounded-2xl mt-[20px] mb-[80px]'>
-              {loading ? <Loading /> : "PLACE ORDE"}
+              {loading ? <Loading /> : "PLACE ORDER"}
             </button>
           </div>
         </form>
@@ -178,9 +176,9 @@ function PlaceOrder() {
 
       {/* Cart Total & Payment */}
       <div className='lg:w-[50%] w-full flex flex-col items-center gap-[30px] px-4'>
-        <div className='w-[90%] lg:w-[70%]'><CartTotal /></div>
-        <div className='py-[10px]'><Title text1='PAYMENT' text2='METHOD' /></div>
 
+        {/* Payment Method FIRST */}
+        <div className='py-[10px]'><Title text1='PAYMENT' text2='METHOD' /></div>
         <div className='flex justify-center gap-[30px] flex-wrap'>
           <button onClick={() => setMethod('razorpay')} className={`w-[150px] h-[50px] ${method === 'razorpay' ? 'border-[5px] border-blue-900' : ''}`}>
             <img src={razorpay} alt="razorpay" className='w-full h-full object-fill rounded-sm' />
@@ -189,6 +187,9 @@ function PlaceOrder() {
             CASH ON DELIVERY
           </button>
         </div>
+
+        {/* Cart Total NEXT */}
+        <div className='w-[90%] lg:w-[70%]'><CartTotal /></div>
       </div>
     </div>
   );

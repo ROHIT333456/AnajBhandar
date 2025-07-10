@@ -57,75 +57,87 @@ function Orders() {
   }, []);
 
   return (
-    <div className='w-[99vw] min-h-[100vh] bg-gradient-to-l from-[#141414] to-[#0c2025] text-white'>
+    <div className='w-full min-h-screen bg-gradient-to-l from-[#141414] to-[#0c2025] text-white'>
       <Nav />
-      <div className='w-full h-full flex items-center lg:justify-start justify-center'>
+      <div className='w-full flex flex-col md:flex-row'>
         <Sidebar />
-        <div className='lg:w-[85%] md:w-[70%] h-full lg:ml-[310px] md:ml-[250px] mt-[70px] flex flex-col gap-8 overflow-x-hidden py-[50px] ml-[100px]'>
-          <h2 className='text-[28px] md:text-[40px] mb-[20px] text-white'>All Orders List</h2>
 
-          {orders.map((order, index) => (
-            <div key={index} className='w-[90%] bg-slate-600 rounded-xl flex lg:items-center items-start justify-between flex-col lg:flex-row p-4 md:px-6 gap-4'>
-              <SiEbox className='w-[60px] h-[60px] text-black p-2 rounded-lg bg-white' />
+        <div className='w-full md:ml-[250px] lg:ml-[310px] mt-[70px] px-4 sm:px-6 py-8 flex flex-col gap-8 pb-32 md:pb-8'>
+          <h2 className='text-2xl sm:text-3xl md:text-4xl font-bold'>All Orders List</h2>
 
-              {/* Order Items */}
-              <div>
-                <div className='flex flex-col gap-1 text-sm md:text-base text-[#56dbfc]'>
-                  {order.items.map((item, idx) => {
-                    const unitPrice = item.price || 0;
-                    const totalPrice = item.quantity * unitPrice;
-                    const itemName = (item.name || 'Unnamed Product').toUpperCase();
-                    return (
-                      <p key={idx} className='text-white'>
-                        {itemName} × {item.quantity} ({item.size}) = ₹{totalPrice}
-                      </p>
-                    );
-                  })}
+          {orders.length === 0 ? (
+            <p className='text-lg'>No orders found.</p>
+          ) : (
+            orders.map((order, index) => (
+              <div
+                key={index}
+                className='w-full bg-slate-600 rounded-xl flex flex-col lg:flex-row gap-4 p-4 shadow-md'
+              >
+                <div className='flex-shrink-0'>
+                  <SiEbox className='w-[60px] h-[60px] text-black p-2 rounded-lg bg-white' />
                 </div>
 
-                {/* Customer Address */}
-                <div className='text-[14px] text-green-100 mt-3'>
-                  <p>{(order.address?.firstName || '') + " " + (order.address?.lastName || '')}</p>
-                  <p>{order.address?.street || ''}</p>
-                  <p>{`${order.address?.city || ''}, ${order.address?.state || ''}, ${order.address?.country || ''}, ${order.address?.pinCode || ''}`}</p>
-                  <p>{order.address?.phone || ''}</p>
+                {/* Order Info */}
+                <div className='flex-1 flex flex-col gap-3'>
+                  {/* Order Items */}
+                  <div className='flex flex-col gap-1 text-sm sm:text-base text-[#56dbfc]'>
+                    {order.items.map((item, idx) => {
+                      const unitPrice = item.price || 0;
+                      const totalPrice = item.quantity * unitPrice;
+                      const itemName = (item.name || 'Unnamed Product').toUpperCase();
+                      return (
+                        <p key={idx} className='text-white break-words'>
+                          {itemName} × {item.quantity} ({item.size}) = ₹{totalPrice}
+                        </p>
+                      );
+                    })}
+                  </div>
+
+                  {/* Customer Address */}
+                  <div className='text-[14px] text-green-100'>
+                    <p>{(order.address?.firstName || '') + " " + (order.address?.lastName || '')}</p>
+                    <p>{order.address?.street || ''}</p>
+                    <p>{`${order.address?.city || ''}, ${order.address?.state || ''}, ${order.address?.country || ''}, ${order.address?.pinCode || ''}`}</p>
+                    <p>{order.address?.phone || ''}</p>
+                  </div>
                 </div>
-              </div>
 
-              {/* Order Summary */}
-              <div className='text-[14px] text-green-100 flex flex-col gap-1'>
-                <p>Items: {order.items.length}</p>
-                <p>Method: {order.paymentMethod || 'N/A'}</p>
-                <p>Payment: {order.payment ? 'Done' : 'Pending'}</p>
-                <p>Date: {order.date ? new Date(order.date).toLocaleDateString() : 'N/A'}</p>
-                <p className='text-lg text-white font-semibold'>Total: ₹{order.amount || 0}</p>
-              </div>
+                {/* Summary + Actions */}
+                <div className='flex flex-col gap-2 sm:text-sm text-xs min-w-[160px]'>
+                  <div className='text-green-100'>
+                    <p>Items: {order.items.length}</p>
+                    <p>Method: {order.paymentMethod || 'N/A'}</p>
+                    <p>Payment: {order.payment ? 'Done' : 'Pending'}</p>
+                    <p>Date: {order.date ? new Date(order.date).toLocaleDateString() : 'N/A'}</p>
+                    <p className='text-white text-base font-semibold'>Total: ₹{order.amount || 0}</p>
+                  </div>
 
-              {/* Status + Delete */}
-              <div className='flex flex-col gap-2 items-start'>
-                <select
-                  value={order.status}
-                  className='px-3 py-2 bg-slate-500 rounded-lg border border-[#96eef3]'
-                  onChange={(e) => statusHandler(e, order._id)}
-                >
-                  <option value="Order Placed">Order Placed</option>
-                  <option value="Packing">Packing</option>
-                  <option value="Shipped">Shipped</option>
-                  <option value="Out for delivery">Out for delivery</option>
-                  <option value="Delivered">Delivered</option>
-                </select>
-
-                {order.status === "Order Placed" && (
-                  <button
-                    onClick={() => deleteOrderHandler(order._id)}
-                    className='mt-2 bg-red-600 text-white px-4 py-1 rounded-md hover:bg-red-700'
+                  {/* Status dropdown */}
+                  <select
+                    value={order.status}
+                    className='px-3 py-1 bg-slate-500 rounded-md border border-[#96eef3] mt-2'
+                    onChange={(e) => statusHandler(e, order._id)}
                   >
-                    Delete
-                  </button>
-                )}
+                    <option value="Order Placed">Order Placed</option>
+                    <option value="Packing">Packing</option>
+                    <option value="Shipped">Shipped</option>
+                    <option value="Out for delivery">Out for delivery</option>
+                    <option value="Delivered">Delivered</option>
+                  </select>
+
+                  {/* Delete button */}
+                  {order.status === "Order Placed" && (
+                    <button
+                      onClick={() => deleteOrderHandler(order._id)}
+                      className='bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700'
+                    >
+                      Delete
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>

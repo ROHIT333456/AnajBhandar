@@ -1,15 +1,25 @@
-import express from "express"
-import { adminLogin, googleLogin, login, logOut, registration } from "../controller/authController.js"
+import express from "express";
+import {
+  registration,
+  login,
+  logOut,
+  googleLogin,
+  adminLogin,
+  forgotPassword,
+  resetPassword
+} from "../controller/authController.js";
 
-const authRoutes = express.Router()
+const authRoutes = express.Router();
 
-authRoutes.post("/registration",registration)
-authRoutes.post("/login",login)
-authRoutes.get("/logout",logOut)
-authRoutes.post("/googlelogin",googleLogin)
-authRoutes.post("/adminlogin",adminLogin)
+// 🔐 Auth Routes
+authRoutes.post("/registration", registration);
+authRoutes.post("/login", login);
+authRoutes.get("/logout", logOut);
+authRoutes.post("/googlelogin", googleLogin);
+authRoutes.post("/adminlogin", adminLogin);
 
+// 🔁 Forgot & Reset Password Routes
+authRoutes.post("/forgot-password", forgotPassword);
+authRoutes.post("/reset-password/:token", resetPassword);
 
-
-
-export default authRoutes
+export default authRoutes;

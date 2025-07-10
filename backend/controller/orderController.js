@@ -11,9 +11,11 @@ const razorpayInstance = new razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
+// ✅ Updated: Delivery charge based on quantity
 const calculateOrderAmount = async (items) => {
   const products = await Product.find({});
   let total = 0;
+  let totalQuantity = 0;
 
   for (const item of items) {
     const product = products.find(p => p._id.toString() === item._id.toString());
@@ -21,20 +23,29 @@ const calculateOrderAmount = async (items) => {
 
     const sizeInKg = parseInt(item.size.replace("kg", ""));
     const unitPrice = parseFloat(product.price);
-    // console.log("size in kg:", sizeInKg,"unit price",unitPrice,"quantity",item.quantity);
-    
-    total += sizeInKg * unitPrice * item.quantity;
+    const quantity = parseInt(item.quantity);
+
+    total += sizeInKg * unitPrice * quantity;
+    totalQuantity += quantity;
   }
 
-  return total + 40; // delivery fee
+  // New delivery logic:
+  let deliveryCharge = 0;
+  if (totalQuantity === 1) {
+    deliveryCharge = 40;
+  } else if (totalQuantity > 1) {
+    deliveryCharge = totalQuantity * 30;
+  }
+
+  return total + deliveryCharge;
 };
 
+// ✅ COD Order
 export const placeOrder = async (req, res) => {
   try {
     const { items, address } = req.body;
     const userId = req.userId;
     const amount = await calculateOrderAmount(items);
-// console.log("this isplace order",amount);
 
     const newOrder = new Order({
       items, amount, userId, address,
@@ -50,6 +61,7 @@ export const placeOrder = async (req, res) => {
   }
 };
 
+// ✅ Razorpay Order
 export const placeOrderRazorpay = async (req, res) => {
   try {
     const { items, address } = req.body;
@@ -79,6 +91,7 @@ export const placeOrderRazorpay = async (req, res) => {
   }
 };
 
+// ✅ Verify Razorpay Payment
 export const verifyRazorpay = async (req, res) => {
   try {
     const userId = req.userId;
@@ -98,6 +111,7 @@ export const verifyRazorpay = async (req, res) => {
   }
 };
 
+// ✅ User Order History
 export const userOrders = async (req, res) => {
   try {
     const userId = req.userId;
@@ -108,6 +122,7 @@ export const userOrders = async (req, res) => {
   }
 };
 
+// ✅ Admin View All Orders
 export const allOrders = async (req, res) => {
   try {
     const orders = await Order.find({});
@@ -117,6 +132,7 @@ export const allOrders = async (req, res) => {
   }
 };
 
+// ✅ Admin: Update Order Status
 export const updateStatus = async (req, res) => {
   try {
     const { orderId, status } = req.body;
@@ -127,6 +143,7 @@ export const updateStatus = async (req, res) => {
   }
 };
 
+// ✅ Admin: Delete Order (Only if 'Order Placed')
 export const deleteOrder = async (req, res) => {
   try {
     const { orderId } = req.params;

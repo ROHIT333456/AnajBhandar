@@ -11,7 +11,8 @@ function Footer() {
   const supportEmail = 'support@AnajBhandar.com';
 
   return (
-    <footer className="w-full bg-[#dbfcfcec] text-[#1e2223]">
+    <footer className="w-full bg-[#dbfcfcec] text-[#1e2223] pb-[80px] md:pb-0">
+      
       {/* Main Footer Section */}
       <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center px-6 md:px-16 py-8 gap-6">
 
@@ -39,10 +40,10 @@ function Footer() {
 
         {/* Company Links */}
         <div className="md:w-[20%] w-full text-center md:text-left">
-          <h2 className="text-lg font-semibold mb-2">Company</h2>
+          <h2 className="text-lg font-semibold mb-2">Explore More</h2>
           <ul className="space-y-1 text-sm">
             <li className="cursor-pointer hover:underline" onClick={() => navigate('/')}>Home</li>
-            <li className="cursor-pointer hover:underline" onClick={() => navigate('/collection')}>collection</li>
+            <li className="cursor-pointer hover:underline" onClick={() => navigate('/collection')}>Collection</li>
             <li className="cursor-pointer hover:underline" onClick={() => navigate('/about')}>About</li>
             <li className="cursor-pointer hover:underline" onClick={() => navigate('/contact')}>Contact-us</li>
           </ul>
@@ -59,7 +60,7 @@ function Footer() {
               📧 <a href={`mailto:${supportEmail}`} className="text-blue-500 underline">{supportEmail}</a>
             </li>
             <li className="hidden md:block">
-              📞 <a href="tel:+918789159033" className="text-blue-500 underline">+91-6207035060</a>
+              📞 <a href="tel:+916207035060" className="text-blue-500 underline">+91-6207035060</a>
             </li>
             <li className="hidden md:block">
               📧 <a href="mailto:manishkeshri547@gmail.com" className="text-blue-500 underline">manishkeshri547@gmail.com</a>
@@ -72,9 +73,11 @@ function Footer() {
       <div className="w-full h-[1px] bg-gray-400"></div>
 
       {/* Bottom Footer Section */}
-      <div className="w-full py-3 px-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-700 bg-[#dbfcfcec]">
-        <p>© 2025 Anaj Bhandar – All Rights Reserved</p>
-        <p className="mt-1 md:mt-0">Website created by <span className="font-semibold text-black">Rohit Keshri</span></p>
+      <div className="w-full py-4 px-4 md:px-16 bg-[#dbfcfcec] text-sm text-gray-700 text-center md:text-left  md:mb-0">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-2">
+          <p>© 2025 Anaj Bhandar – All Rights Reserved</p>
+          <p>Website created by <span className="font-semibold text-black">Rohit Keshri</span></p>
+        </div>
       </div>
     </footer>
   );

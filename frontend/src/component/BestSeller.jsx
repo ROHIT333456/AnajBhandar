@@ -9,7 +9,7 @@ function BestSeller() {
 
   useEffect(() => {
     const filterProduct = products.filter(item => item.bestseller);
-    setBestSeller(filterProduct.slice(0, 4)); // Show top 4 best sellers
+    setBestSeller(filterProduct.slice(0, 6)); 
   }, [products]);
 
   return (
