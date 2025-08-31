@@ -50,7 +50,7 @@ function Home() {
             </p>
             <button
               className="bg-[#46d1f7] text-black px-6 py-3 rounded-full font-semibold shadow-md hover:bg-[#2cb5d4] hover:scale-105 transition-all duration-300"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/Collection")}
             >
               Shop Now
             </button>
