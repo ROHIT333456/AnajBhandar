@@ -37,7 +37,7 @@ const calculateOrderAmount = async (items) => {
     deliveryCharge = totalQuantity * 30;
   }
 
-  return total + deliveryCharge;
+  return total ;
 };
 
 // ✅ COD Order
