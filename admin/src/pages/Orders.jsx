@@ -12,7 +12,7 @@ function Orders() {
   const fetchAllOrders = async () => {
     try {
       const result = await axios.post(`${serverUrl}/api/order/list`, {}, { withCredentials: true });
-      setOrders(result.data.reverse());
+      setOrders(result.data); // already sorted in backend
     } catch (error) {
       console.log(error);
     }
@@ -54,6 +54,7 @@ function Orders() {
 
   useEffect(() => {
     fetchAllOrders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -68,9 +69,9 @@ function Orders() {
           {orders.length === 0 ? (
             <p className='text-lg'>No orders found.</p>
           ) : (
-            orders.map((order, index) => (
+            orders.map((order) => (
               <div
-                key={index}
+                key={order._id}
                 className='w-full bg-slate-600 rounded-xl flex flex-col lg:flex-row gap-4 p-4 shadow-md'
               >
                 <div className='flex-shrink-0'>
@@ -78,17 +79,30 @@ function Orders() {
                 </div>
 
                 {/* Order Info */}
-                <div className='flex-1 flex flex-col gap-3'>
+                <div className='flex-1 flex flex-col gap-4'>
                   {/* Order Items */}
-                  <div className='flex flex-col gap-1 text-sm sm:text-base text-[#56dbfc]'>
-                    {order.items.map((item, idx) => {
-                      const unitPrice = item.price || 0;
-                      const totalPrice = item.quantity * unitPrice;
+                  <div className='flex flex-col gap-3 border border-white/20 rounded-lg p-3 bg-[#ffffff0a]'>
+                    {order.items?.map((item, idx) => {
+                      const unitPrice = Number(item.price) || 0; // per kg
+                      const qty = Number(item.quantity) || 0;
+                      const kg = parseInt(String(item.size).replace("kg", ""), 10) || 0;
+                      const lineTotal = unitPrice * kg * qty;
                       const itemName = (item.name || 'Unnamed Product').toUpperCase();
+
                       return (
-                        <p key={idx} className='text-white break-words'>
-                          {itemName} × {item.quantity} ({item.size}) = ₹{totalPrice}
-                        </p>
+                        <div key={idx} className='flex items-center gap-4'>
+                          <img
+                            src={item.image1}
+                            alt={item.name}
+                            className='w-16 h-16 object-cover rounded-md border border-white'
+                          />
+                          <div className='flex flex-col text-sm sm:text-base text-[#d0f6ff]'>
+                            <p className='font-semibold'>{itemName}</p>
+                            <p>Qty: {qty} | Size: {item.size}</p>
+                            <p>Unit: ₹{unitPrice} / kg</p>
+                            <p>Total: ₹{lineTotal}</p>
+                          </div>
+                        </div>
                       );
                     })}
                   </div>
@@ -103,9 +117,9 @@ function Orders() {
                 </div>
 
                 {/* Summary + Actions */}
-                <div className='flex flex-col gap-2 sm:text-sm text-xs min-w-[160px]'>
+                <div className='flex flex-col gap-2 sm:text-sm text-xs min-w-[180px]'>
                   <div className='text-green-100'>
-                    <p>Items: {order.items.length}</p>
+                    <p>Items: {order.items?.length || 0}</p>
                     <p>Method: {order.paymentMethod || 'N/A'}</p>
                     <p>Payment: {order.payment ? 'Done' : 'Pending'}</p>
                     <p>Date: {order.date ? new Date(order.date).toLocaleDateString() : 'N/A'}</p>

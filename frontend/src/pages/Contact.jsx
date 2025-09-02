@@ -21,6 +21,8 @@ function Contact() {
           <div className='lg:w-[80%] w-[100%] text-white md:text-[16px] text-[13px]'>
             <p>Anaj Bhandar Rice Traders</p>
             <p>Bajar samiti, Garhwa, Jharkhand, India</p>
+            {/* Hindi line added here */}
+            <p className="mt-2 font-semibold text-yellow-300">ज़्यादा मात्रा में लेने के लिए संपर्क करें</p>
           </div>
 
           <div className='lg:w-[80%] w-[100%] text-white md:text-[16px] text-[13px]'>

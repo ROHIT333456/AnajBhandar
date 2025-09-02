@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import logo from '../assets/logo.png';
 import { IoSearchCircleOutline, IoSearchCircleSharp } from 'react-icons/io5';
-import { IoMdHome } from 'react-icons/io'; // ✅ Fixed import
+import { IoMdHome } from 'react-icons/io';
 import { FaCircleUser } from 'react-icons/fa6';
 import { MdOutlineShoppingCart, MdContacts } from 'react-icons/md';
 import { HiOutlineCollection } from 'react-icons/hi';
@@ -12,16 +12,16 @@ import { authDataContext } from '../context/AuthContext';
 import { shopDataContext } from '../context/ShopContext';
 
 function Nav() {
-  const { getCurrentUser, userData, setUserData } = useContext(userDataContext);
+  const { userData, setUserData } = useContext(userDataContext);
   const { serverUrl } = useContext(authDataContext);
   const { showSearch, setShowSearch, search, setSearch, getCartCount } = useContext(shopDataContext);
   const [showProfile, setShowProfile] = useState(false);
   const navigate = useNavigate();
 
+  // Logout user
   const handleLogout = async () => {
     try {
-      const result = await axios.get(serverUrl + "/api/auth/logout", { withCredentials: true });
-      console.log(result.data);
+      await axios.get(`${serverUrl}/api/auth/logout`, { withCredentials: true });
       setUserData(null);
       setShowProfile(false);
       navigate("/login");
@@ -30,9 +30,16 @@ function Nav() {
     }
   };
 
+  // Handle search click or Enter key
+  const handleSearch = () => {
+    if (search.trim()) {
+      navigate(`/collection?search=${encodeURIComponent(search.trim())}`);
+    }
+  };
+
   return (
     <div className='w-full h-[70px] bg-[#ecfafaec] fixed top-0 z-10 flex items-center justify-between px-6 shadow-md'>
-
+      
       {/* Logo */}
       <div className='w-[20%] lg:w-[30%] flex items-center gap-2'>
         <img src={logo} alt="RiceCart Logo" className='w-[30px]' />
@@ -51,12 +58,18 @@ function Nav() {
 
       {/* Right Controls */}
       <div className='w-[30%] flex items-center justify-end gap-5 relative'>
+        {/* Search icon */}
         {!showSearch ? (
-          <IoSearchCircleOutline className='w-[38px] h-[38px] text-black cursor-pointer' onClick={() => { setShowSearch(prev => !prev); navigate("/collection"); }} />
+          <IoSearchCircleOutline className='w-[38px] h-[38px] text-black cursor-pointer' 
+            onClick={() => setShowSearch(true)} 
+          />
         ) : (
-          <IoSearchCircleSharp className='w-[38px] h-[38px] text-black cursor-pointer' onClick={() => setShowSearch(prev => !prev)} />
+          <IoSearchCircleSharp className='w-[38px] h-[38px] text-black cursor-pointer' 
+            onClick={() => { setShowSearch(false); handleSearch(); }} 
+          />
         )}
 
+        {/* Profile icon */}
         {!userData ? (
           <FaCircleUser className='w-[29px] h-[29px] text-black cursor-pointer' onClick={() => setShowProfile(prev => !prev)} />
         ) : (
@@ -65,6 +78,7 @@ function Nav() {
           </div>
         )}
 
+        {/* Cart icon */}
         <MdOutlineShoppingCart className='w-[30px] h-[30px] text-black cursor-pointer hidden md:block' onClick={() => navigate("/cart")} />
         <p className='absolute w-[18px] h-[18px] flex items-center justify-center bg-black text-white rounded-full text-[9px] top-[10px] right-[20px] hidden-md:flex'>
           {getCartCount()}
@@ -78,8 +92,9 @@ function Nav() {
             type="text"
             className='lg:w-[50%] w-[80%] h-[60%] bg-[#233533] rounded-[30px] px-[50px] placeholder:text-white text-white text-[18px] outline-none'
             placeholder='Search for Basmati, Brown, Organic...'
-            onChange={(e) => setSearch(e.target.value)}
             value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
           />
         </div>
       )}
@@ -88,15 +103,8 @@ function Nav() {
       {showProfile && (
         <div className='absolute w-[220px] h-[150px] bg-[#000000d7] top-[110%] right-[4%] border border-gray-400 rounded-[10px] z-10'>
           <ul className='flex flex-col justify-around text-white text-[17px] p-3'>
-            {!userData && (
-              <li className='hover:bg-[#2f2f2f] px-3 py-2 cursor-pointer' onClick={() => {
-                navigate("/login");
-                setShowProfile(false);
-              }}>Login</li>
-            )}
-            {userData && (
-              <li className='hover:bg-[#2f2f2f] px-3 py-2 cursor-pointer' onClick={handleLogout}>Logout</li>
-            )}
+            {!userData && <li className='hover:bg-[#2f2f2f] px-3 py-2 cursor-pointer' onClick={() => { navigate("/login"); setShowProfile(false); }}>Login</li>}
+            {userData && <li className='hover:bg-[#2f2f2f] px-3 py-2 cursor-pointer' onClick={handleLogout}>Logout</li>}
             <li className='hover:bg-[#2f2f2f] px-3 py-2 cursor-pointer' onClick={() => { navigate("/order"); setShowProfile(false); }}>Orders</li>
             <li className='hover:bg-[#2f2f2f] px-3 py-2 cursor-pointer' onClick={() => { navigate("/about"); setShowProfile(false); }}>About</li>
           </ul>

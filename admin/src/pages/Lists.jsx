@@ -80,7 +80,7 @@ function Lists() {
                     <p className='text-[#afffff] font-bold text-lg'>₹{item.price}</p>
                     <div className='flex gap-2 mt-2'>
                       <button
-                        onClick={() => navigate(`/editproduct/${item._id}`)}
+                        onClick={() => navigate(`/Editproduct/${item._id}`)}
                         className='text-blue-500 hover:text-white border border-blue-500 hover:bg-blue-600 px-3 py-1 rounded text-sm'
                       >
                         Edit

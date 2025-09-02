@@ -21,7 +21,12 @@ export default function AdminHeroManager() {
 
   const handleImageUpload = e => {
     const file = e.target.files[0];
-    if (file) setFormData(prev => ({ ...prev, image: file }));
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) {
+      alert("File too large. Max 10MB");
+      return;
+    }
+    setFormData(prev => ({ ...prev, image: file }));
   };
 
   const handleSubmit = async () => {
@@ -34,9 +39,11 @@ export default function AdminHeroManager() {
       data.append("text1", formData.text1);
       data.append("text2", formData.text2);
       data.append("image", formData.image);
+
       await axios.post(`${serverUrl}/api/hero`, data, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
+
       setFormData({ text1: '', text2: '', image: null });
       fetchHeroes();
     } catch (err) {
@@ -64,8 +71,6 @@ export default function AdminHeroManager() {
     <div className="w-full min-h-screen bg-white text-black relative overflow-x-hidden">
       <Nav />
       <Sidebar />
-
-      {/* add top padding equal to header height */}
       <div className="pt-[80px] w-full md:w-[82%] ml-auto px-4 sm:px-6 md:px-16 pb-20">
         <h2 className="text-3xl font-bold text-[#0b2f3a] mb-6">Manage Hero Slides</h2>
 

@@ -23,7 +23,14 @@ function Order() {
             allOrdersItem.push(item)
           })
         })
-        setOrderData(allOrdersItem.reverse())
+
+        // ✅ Filter: keep only orders within last 7 days
+        const sevenDaysAgo = new Date()
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+
+        const recentOrders = allOrdersItem.filter((item) => new Date(item.date) >= sevenDaysAgo)
+
+        setOrderData(recentOrders.reverse())
       }
     } catch (error) {
       console.log(error)

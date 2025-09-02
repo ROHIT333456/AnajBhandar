@@ -12,7 +12,7 @@ import Loading from '../component/Loading';
 function PlaceOrder() {
   const [method, setMethod] = useState('cod');
   const navigate = useNavigate();
-  const { cartItem, setCartItem, delivery_fee, products } = useContext(shopDataContext);
+  const { cartItem, setCartItem } = useContext(shopDataContext);
   const { serverUrl } = useContext(authDataContext);
   const [loading, setLoading] = useState(false);
 
@@ -44,7 +44,11 @@ function PlaceOrder() {
       receipt: order.receipt,
       handler: async (response) => {
         try {
-          const { data } = await axios.post(serverUrl + '/api/order/verifyrazorpay', response, { withCredentials: true });
+          const { data } = await axios.post(
+            `${serverUrl}/api/order/verifyrazorpay`,
+            response,
+            { withCredentials: true }
+          );
           if (data) {
             document.body.style.overflow = 'auto';
             setCartItem({});
@@ -74,25 +78,16 @@ function PlaceOrder() {
     setLoading(true);
 
     try {
+      // build items from cart
       const orderItems = [];
-
       for (const productId in cartItem) {
         for (const size in cartItem[productId]) {
           const quantity = cartItem[productId][size];
           if (quantity > 0) {
-            orderItems.push({
-              _id: productId,
-              size,
-              quantity
-            });
+            orderItems.push({ _id: productId, size, quantity });
           }
         }
       }
-
-      const orderData = {
-        address: formData,
-        items: orderItems
-      };
 
       if (orderItems.length === 0) {
         toast.error("Cart is empty!");
@@ -100,9 +95,15 @@ function PlaceOrder() {
         return;
       }
 
+      const orderData = { address: formData, items: orderItems };
+
       if (method === 'cod') {
-        const codResult = await axios.post(serverUrl + "/api/order/placeorder", orderData, { withCredentials: true });
-        if (codResult.data) {
+        const { data } = await axios.post(
+          `${serverUrl}/api/order/placeorder`,
+          orderData,
+          { withCredentials: true }
+        );
+        if (data) {
           setCartItem({});
           toast.success("Order Placed");
           navigate("/order");
@@ -110,16 +111,19 @@ function PlaceOrder() {
           toast.error("Order Placement Failed");
         }
       } else if (method === 'razorpay') {
-        const razorpayResult = await axios.post(serverUrl + "/api/order/razorpay", orderData, { withCredentials: true });
-        if (razorpayResult.data) {
-          initPay(razorpayResult.data);
+        const { data } = await axios.post(
+          `${serverUrl}/api/order/razorpay`,
+          orderData,
+          { withCredentials: true }
+        );
+        if (data) {
+          initPay(data);
         } else {
           toast.error("Razorpay order failed");
         }
       } else {
         toast.error("Select a valid payment method");
       }
-
     } catch (error) {
       console.log("Submit Error:", error);
       toast.error("Something went wrong!");
@@ -138,7 +142,6 @@ function PlaceOrder() {
             <Title text1='DELIVERY' text2='INFORMATION' />
           </div>
 
-          {/* Form Inputs */}
           <div className='flex justify-between px-[10px] mb-3'>
             <input type="text" name="firstName" value={formData.firstName} onChange={onChangeHandler} required placeholder='First name' className='w-[48%] h-[50px] bg-slate-700 text-white rounded-md px-4' />
             <input type="text" name="lastName" value={formData.lastName} onChange={onChangeHandler} required placeholder='Last name' className='w-[48%] h-[50px] bg-slate-700 text-white rounded-md px-4' />
@@ -167,7 +170,11 @@ function PlaceOrder() {
           </div>
 
           <div className='flex justify-center'>
-            <button type='submit' className='bg-[#3bcee848] border border-[#80808049] text-white text-[18px] px-[50px] py-[10px] rounded-2xl mt-[20px] mb-[80px]'>
+            <button
+              type="submit"
+              disabled={loading}
+              className='bg-[#3bcee848] border border-[#80808049] text-white text-[18px] px-[50px] py-[10px] rounded-2xl mt-[20px] mb-[80px]'
+            >
               {loading ? <Loading /> : "PLACE ORDER"}
             </button>
           </div>
@@ -176,19 +183,16 @@ function PlaceOrder() {
 
       {/* Cart Total & Payment */}
       <div className='lg:w-[50%] w-full flex flex-col items-center gap-[30px] px-4'>
-
-        {/* Payment Method FIRST */}
         <div className='py-[10px]'><Title text1='PAYMENT' text2='METHOD' /></div>
         <div className='flex justify-center gap-[30px] flex-wrap'>
-          <button onClick={() => setMethod('razorpay')} className={`w-[150px] h-[50px] ${method === 'razorpay' ? 'border-[5px] border-blue-900' : ''}`}>
+          <button type="button" onClick={() => setMethod('razorpay')} className={`w-[150px] h-[50px] ${method === 'razorpay' ? 'border-[5px] border-blue-900' : ''}`}>
             <img src={razorpay} alt="razorpay" className='w-full h-full object-fill rounded-sm' />
           </button>
-          <button onClick={() => setMethod('cod')} className={`w-[200px] h-[50px] bg-gradient-to-t from-[#95b3f8] to-white text-[14px] px-[20px] rounded-sm text-[#332f6f] font-bold ${method === 'cod' ? 'border-[5px] border-blue-900' : ''}`}>
+          <button type="button" onClick={() => setMethod('cod')} className={`w-[200px] h-[50px] bg-gradient-to-t from-[#95b3f8] to-white text-[14px] px-[20px] rounded-sm text-[#332f6f] font-bold ${method === 'cod' ? 'border-[5px] border-blue-900' : ''}`}>
             CASH ON DELIVERY
           </button>
         </div>
 
-        {/* Cart Total NEXT */}
         <div className='w-[90%] lg:w-[70%]'><CartTotal /></div>
       </div>
     </div>

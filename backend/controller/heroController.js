@@ -7,15 +7,17 @@ export const createHero = async (req, res) => {
   try {
     const { text1, text2 } = req.body;
 
-    // Ensure multer has put the file on disk in req.file.path
     if (!req.file || !req.file.path) {
       return res.status(400).json({ message: "Hero image file is required" });
     }
 
-    // 1. Upload the local temp file to Cloudinary, delete local copy
+    // Check file size (10MB max)
+    if (req.file.size > 10 * 1024 * 1024) {
+      return res.status(400).json({ message: "File size too large. Maximum is 10MB." });
+    }
+
     const imageUrl = await uploadOnCloudinary(req.file.path);
 
-    // 2. Build the hero document
     const heroData = {
       text1,
       text2,
@@ -24,7 +26,6 @@ export const createHero = async (req, res) => {
       active: true,
     };
 
-    // 3. Save in MongoDB
     const hero = await Hero.create(heroData);
     return res.status(201).json(hero);
   } catch (error) {
