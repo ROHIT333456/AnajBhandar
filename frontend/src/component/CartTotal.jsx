@@ -25,10 +25,22 @@ function CartTotal() {
     return { subtotal, totalQuantity };
   };
 
-  const { subtotal } = getCartDetails();
+  const { subtotal, totalQuantity } = getCartDetails();
 
-  // Final total = just subtotal (no delivery fee)
-  const finalTotal = subtotal;
+  // Apply delivery rule: 1 item → ₹40, more → ₹30 * qty
+  let deliveryFee = 0;
+  let deliveryMessage = '';
+  if (subtotal > 0) {
+    if (totalQuantity === 1) {
+      deliveryFee = 40;
+      deliveryMessage = "₹40 delivery charge for 1 item";
+    } else if (totalQuantity > 1) {
+      deliveryFee = totalQuantity * 30;
+      deliveryMessage = `₹30 delivery charge per item (${totalQuantity} items)`;
+    }
+  }
+
+  const finalTotal = subtotal === 0 ? 0 : subtotal + deliveryFee;
 
   return (
     <div className="w-full lg:ml-[30px]">
@@ -45,9 +57,24 @@ function CartTotal() {
 
         <hr className="border-[#4d8890]" />
 
+        {/* Shipping Fee */}
+        <div className="flex justify-between text-white text-lg">
+          <p>Shipping Fee</p>
+          <p>{currency} {subtotal === 0 ? '0.00' : deliveryFee.toFixed(2)}</p>
+        </div>
+
+        {/* Delivery Logic Message */}
+        {subtotal > 0 && (
+          <p className="text-xs text-gray-300 mt-[-8px] mb-2 italic text-right">
+            {deliveryMessage}
+          </p>
+        )}
+
+        <hr className="border-[#4d8890]" />
+
         {/* Total */}
         <div className="flex justify-between text-white text-lg font-bold">
-          <p>Total</p>
+          <p>Total (incl. delivery)</p>
           <p>{currency} {finalTotal.toFixed(2)}</p>
         </div>
       </div>
