@@ -36,11 +36,7 @@ const calculateOrderAmount = async (items) => {
   if (totalQuantity === 1) deliveryCharge = 40;
   else if (totalQuantity > 1) deliveryCharge = totalQuantity * 30;
 
-<<<<<<< HEAD
   return Math.round(total + deliveryCharge);
-=======
-  return total ;
->>>>>>> 073e20f60f91aedd285cdb403d2fd75304ef8792
 };
 
 /** Helper: enrich items from DB */
